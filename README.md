@@ -2,6 +2,7 @@
 ## Installation
 
 Developers need a minimum of:
+
  - A text editor
  - [RequireJS v0.26.0][requirejs] or above.
  - [jQuery v1.6][jquery] or above.

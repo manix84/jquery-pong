@@ -8,28 +8,39 @@
  *   @author Rob Taylor <manix84@gmail.com>
  */
 define([
-    'jquery-pong'
+    'jquery'
 ], function ($) {
     $.fn.pong = function(options) {
         var defaults = {
-            targetSpeed: 30, //ms
-            ballAngle: 45, //degrees
-            ballSpeed: 8, //pixels per update
-            compSpeed: 5, //speed of your opponent!!
-            playerSpeed: 5, //pixels per update
-            difficulty: 5,
             width: $(this).width, //px
             height: $(this).height, //px
+
+            targetSpeed: 30, //ms
+
+            ballAngle: 45, //degrees
+            ballSpeed: 8, //pixels per update
+            ballWidth: 14, //px
+            ballHeight: 14, //px
+            roundBall: false, // true/false
+
+            compSpeed: 5, //speed of your opponent!!
+            playerSpeed: 5, //pixels per update
+
+            difficulty: 5,
+            playTo: 10, //points
+
             paddleWidth: 10, //px
             paddleHeight: 40, //px
             paddleBuffer: 1, //px from the edge of the play area
-            ballWidth: 14, //px
-            ballHeight: 14, //px
-            playTo: 10, //points
 
-            // New options
+            fontSizes: {
+                score: '10em',
+                results: '5em',
+                cornerMrg: '1em'
+            },
+
             courtSize: 7, // px
-            roundBall: false, // true/false
+
             sounds: { // OBJECT
                 wallImpact: false, // URL
                 paddleImpact: false, // URL
@@ -37,8 +48,8 @@ define([
                 win: false, // URL
                 loose: false // URL
             },
-            dividerWidth: 10,
-            font: 'sans-serif',
+
+            font: 'sans-serif', // Font name (custom fonts are valid)
             backgroundColor: '#000', // Color Value
             foregroundColor: '#fff' // Color Value
         },
@@ -346,14 +357,14 @@ define([
             $this.css('font-family', opts.font);
 
             $this.append('<textarea class="field" style="position:absolute;background:' + opts.backgroundColor + ';border:0;top:-9999px;left:-9999px;width:0;height0;resize:none;outline:0"></textarea>');
-            $this.append('<div class="yourScoreBoard" style="position:absolute;color:' + opts.foregroundColor + ';font-family:inherit;text-align:left;font-weight:bold;font-size:10em">0</div>');
-            $this.append('<div class="compScoreBoard" style="position:absolute;color:' + opts.foregroundColor + ';font-family:inherit;text-align:right;font-weight:bold;font-size:10em">0</div>');
-            $this.append('<div class="result" style="font-family:inherit;color:' + opts.foregroundColor + ';font-size:5em;position:absolute;text-align:center"></div>');
+            $this.append('<div class="yourScoreBoard" style="position:absolute;color:' + opts.foregroundColor + ';font-family:inherit;text-align:left;font-weight:bold;font-size:' + opts.fontSizes.score + '">0</div>');
+            $this.append('<div class="compScoreBoard" style="position:absolute;color:' + opts.foregroundColor + ';font-family:inherit;text-align:right;font-weight:bold;font-size:' + opts.fontSizes.score + '">0</div>');
+            $this.append('<div class="result" style="font-family:inherit;color:' + opts.foregroundColor + ';font-size:' + opts.fontSizes.result + ';position:absolute;text-align:center"></div>');
             $this.append('<div class="leftPaddle" style="position:absolute;background-color:' + opts.foregroundColor + ';"></div>');
             $this.append('<div class="rightPaddle" style="position:absolute;background-color:' + opts.foregroundColor + ';"></div>');
             $this.append('<div class="divider" style="border-style:dashed;width:0;border-color:' + opts.foregroundColor + ';border-width:0;position:absolute"></div>');
             $this.append('<div class="ball" style="position:absolute;visibility:hidden;">&nbsp;</div>');
-            $this.append('<div class="msg" style="font-family:inherit;position:absolute;font-size:8pt;color:' + opts.foregroundColor + ';bottom:2px;right:2px;"></div>');
+            $this.append('<div class="msg" style="font-family:inherit;position:absolute;font-size:' + opts.fontSizes.cornerMrg + ';color:' + opts.foregroundColor + ';bottom:2px;right:2px;"></div>');
 
             if (!!opts.sounds) {
                 if (!!opts.sounds.paddleImpact) {

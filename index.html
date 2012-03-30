@@ -1,101 +1,141 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset='utf-8'>
+    <head>
+        <meta charset='utf-8'>
 
-  <title>manix84/jquery-pong @ GitHub</title>
+        <title>manix84/jquery-pong Demo @ GitHub</title>
 
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #eccfcb;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #000000;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #133034; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #133034; }
-    h3 { text-align: center; color: #133034; }
-    a { color: #133034; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
-</head>
+        <style type="text/css">
+            body{margin-top:1em;background-color:#FFF;font-family:Helvetica, Arial, FreeSans, san-serif;color:#000;}
+            #container{width:700px;margin:0 auto;}
+            h1{font-size:3.8em;color:#133034;margin-bottom:3px;}
+            h1 .small{font-size:.4em;}
+            h1 a{text-decoration:none;}
+            h2{font-size:1.5em;color:#133034;}
+            h3{text-align:center;color:#133034;}
+            a{color:#133034;}
+            .description{font-size:1.2em;margin-bottom:30px;margin-top:30px;font-style:italic;}
+            .download{float:right;}
+            pre{background:#000;color:#fff;padding:15px;}
+            hr{border:0;width:80%;border-bottom:1px solid #aaa;}
+            .footer{text-align:center;padding-top:30px;font-style:italic;}
+            .pongScreen{background-image:url(./images/choicescreen_background.jpg);min-height:443px;width:580px;padding:60px;}
 
-<body>
-  <a href="https://github.com/manix84/jquery-pong"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+            @font-face {
+                font-family: Visitor;
+                src: url("./src/fonts/Visitor.ttf") format("truetype");
+            }
+        </style>
+        <script src="scripts/require.js"></script>
+        <script type='text/javascript'>
+            require({
+                baseUrl: 'scripts/',
+                paths: {
+                    "jquery": "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min",
+                    "jquery.pong": "../src/jquery.pong"
+                }
+            }, [
+                'jquery',
+                'jquery.pong'
+            ], function () {
+                $('#pong').pong({
+                    height: 400,
+                    width: 580,
+                    difficulty: 2,
+                    ballSpeed: 15,
+                    compSpeed: 9,
+                    playerSpeed: 9,
+                    paddleHeight: 45,
+                    paddleWidth: 8,
+                    fontSizes: {
+                        score: '6em',
+                        results: '3em',
+                        cornerMrg: '0.8em'
+                    },
+                    courtSize: 5,
+                    backgroundColor: 'transparent',
+                    sounds: {
+                        wallImpact: './src/audio/wallImpact.wav',
+                        paddleImpact: './src/audio/paddleImpact.wav',
+                        score: false
+                    },
+                    font: 'Visitor, monospace'
+                });
+            });
+        </script>
+    </head>
 
-  <div id="container">
+    <body>
+        <a href="https://github.com/manix84/jquery-pong">
+            <img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" />
+        </a>
 
-    <div class="download">
-      <a href="https://github.com/manix84/jquery-pong/zipball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/zip.png"></a>
-      <a href="https://github.com/manix84/jquery-pong/tarball/master">
-        <img border="0" width="90" src="https://github.com/images/modules/download/tar.png"></a>
-    </div>
+        <div id="container">
 
-    <h1><a href="https://github.com/manix84/jquery-pong">jquery-pong</a>
-      <span class="small">by <a href="https://github.com/manix84">manix84</a></span></h1>
+            <div class="download">
+                <a href="https://github.com/manix84/jquery-pong/zipball/master">
+                    <img border="0" width="90" src="https://github.com/images/modules/download/zip.png" />
+                </a>
+                <a href="https://github.com/manix84/jquery-pong/tarball/master">
+                    <img border="0" width="90" src="https://github.com/images/modules/download/tar.png" />
+                </a>
+            </div>
 
-    <div class="description">
-      Pong for jQuery. Yeah.
-    </div>
+            <h1>
+                <a href="https://github.com/manix84/jquery-pong">jquery-pong</a>
+                <span class="small">by <a href="https://github.com/manix84">manix84</a></span>
+            </h1>
 
-    
+            <div class="description">
+                Pong for jQuery. Yeah.
+            </div>
 
-    
-      <h2>Dependencies</h2>
-      <p>jrburke/requirejs
-jquery/jquery</p>
-    
+            <h2>Demo</h2>
+            <div class='pongScreen'>
+                <div id='pong'></div>
+            </div>
 
-    
+            <h2>Dependencies</h2>
+            <ul>
+                <li><a href='https://github.com/jrburke/requirejs'>jrburke/requirejs</a></li>
+                <li><a href='https://github.com/jquery/jquery'>jquery/jquery</a></li>
+            </ul>
 
-    
+            <h2>Authors</h2>
+            <ul>
+                <li><a href='https://github.com/manix84'>Rob Taylor</a> (<a href='mailto:manix84@gmail.com'>manix84@gmail.com</a>)</li>
+                <li><a href='https://github.com/benogle'>Ben Ogle</a> (<a href='mailto:ogle.ben@gmail.com'>ogle.ben@gmail.com</a>)</li>
+            </ul>
 
-    
-      <h2>Authors</h2>
-      <p>Rob Taylor (manix84@gmail.com)<br/>Ben Ogle (ogle.ben@gmail.com)<br/>      </p>
-    
+            <h2>Contact</h2>
+            <p><a href=''>Rob Taylor</a> (<a href='mailto:manix84@gmail.com'>manix84@gmail.com</a>)</p>
 
-    
-      <h2>Contact</h2>
-      <p>Rob Taylor (manix84@gmail.com)<br/>      </p>
-    
+            <h2>Download</h2>
+            <p>
+                You can download this project in either
+                <a href="https://github.com/manix84/jquery-pong/zipball/master">zip</a> or
+                <a href="https://github.com/manix84/jquery-pong/tarball/master">tar formats.
+            </p>
+            <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
+                by running:
+                <pre>$ git clone git://github.com/manix84/jquery-pong</pre>
+            </p>
 
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="https://github.com/manix84/jquery-pong/zipball/master">zip</a> or
-      <a href="https://github.com/manix84/jquery-pong/tarball/master">tar formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/manix84/jquery-pong</pre>
-    </p>
+            <div class="footer">
+                get the source code on GitHub : <a href="https://github.com/manix84/jquery-pong">manix84/jquery-pong</a>
+            </div>
 
-    <div class="footer">
-      get the source code on GitHub : <a href="https://github.com/manix84/jquery-pong">manix84/jquery-pong</a>
-    </div>
+        </div>
 
-  </div>
-
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-30459282-1");
-pageTracker._trackPageview();
-} catch(err) {}</script>"
-</body>
+        <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+            </script>
+            <script type="text/javascript">
+            try {
+            var pageTracker = _gat._getTracker("UA-30459282-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+        </script>"
+    </body>
 </html>

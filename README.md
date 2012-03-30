@@ -1,12 +1,8 @@
 # jQuery-Pong
-
-
-
 ## Installation
 
 Developers need a minimum of:
-
- - A text editor (my personal choice is [Sublime Text 2][sublime])
+ - A text editor
  - [RequireJS v0.26.0][requirejs] or above.
  - [jQuery v1.6][jquery] or above.
 
@@ -15,7 +11,7 @@ Developers need a minimum of:
     <div id='someElement'></div>
     <script type='text/javascript'>
         require([
-            'pong'
+            'jquery-pong'
         ], function () {
             $.ready(function () {
                 $('#someElement').pong({
@@ -38,7 +34,5 @@ Developers need a minimum of:
         });
     </script>
 
-
-[sublime]: http://www.sublimetext.com/2
 [requirejs]: http://requirejs.org
 [jquery]: http://jquery.com

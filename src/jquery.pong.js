@@ -1,12 +1,14 @@
 /**
  * ZOMG! jQuery pong!! W00t, yeah.
- * Based on the one by a guy named
+ * Oringinal writter:
  *   @author Ben White <benwhite@columbus.rr.com>
+ * Second draft writter:
  *   @author Ben Ogle <ben@benogle.com>
- * @author Rob Taylor <manix84@gmail.com>
+ * Third draft writter (Me):
+ *   @author Rob Taylor <manix84@gmail.com>
  */
 define([
-    'jquery'
+    'jquery-pong'
 ], function ($) {
     $.fn.pong = function(options) {
         var defaults = {

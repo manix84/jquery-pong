@@ -101,6 +101,20 @@
                 <li><a href='https://github.com/jquery/jquery'>jquery/jquery</a></li>
             </ul>
 
+            <h2>Usage</h2>
+            <pre>
+&lt;div id='someElement'&gt;&lt;/div&gt;
+&lt;script type='text/javascript'&gt;
+    require([
+        'jquery-pong'
+    ], function () {
+        $.ready(function () {
+            $('#someElement').pong();
+        });
+    });
+&lt;/script&gt;
+            </pre>
+
             <h2>Authors</h2>
             <ul>
                 <li><a href='https://github.com/manix84'>Rob Taylor</a> (<a href='mailto:manix84@gmail.com'>manix84@gmail.com</a>)</li>

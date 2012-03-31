@@ -23,7 +23,7 @@
 
             @font-face {
                 font-family: Visitor;
-                src: url("./src/fonts/Visitor.ttf") format("truetype");
+                src: url("./fonts/Visitor.ttf") format("truetype");
             }
         </style>
         <script src="scripts/require.js"></script>
@@ -32,7 +32,6 @@
                 baseUrl: 'scripts/',
                 paths: {
                     "jquery": "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min",
-                    "jquery.pong": "../src/jquery.pong"
                 }
             }, [
                 'jquery',
@@ -55,8 +54,8 @@
                     courtSize: 5,
                     backgroundColor: 'transparent',
                     sounds: {
-                        wallImpact: './src/audio/wallImpact.wav',
-                        paddleImpact: './src/audio/paddleImpact.wav',
+                        wallImpact: './audio/wallImpact.wav',
+                        paddleImpact: './audio/paddleImpact.wav',
                         score: false
                     },
                     font: 'Visitor, monospace'

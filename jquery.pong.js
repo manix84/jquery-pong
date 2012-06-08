@@ -10,7 +10,7 @@
 define([
     'jquery'
 ], function ($) {
-    $.fn.pong = function(options) {
+    $.fn.pong = function (options) {
         var defaults = {
             width: $(this).width, //px
             height: $(this).height, //px
@@ -53,11 +53,11 @@ define([
             backgroundColor: '#000', // Color Value
             foregroundColor: '#fff' // Color Value
         },
-        opts = $.extend(defaults, options);
+        opts = $.extend(defaults, options),
 
         ////functions!
 
-        function PositionBall(bolSide, gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard) {
+        positionBall = function (bolSide, gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard) {
 
             if (bolSide) {
                 gameData.x = opts.width - opts.paddleWidth - opts.paddleBuffer - opts.ballWidth - 10;
@@ -70,14 +70,14 @@ define([
             ball.css('left', gameData.x);
             ball.css('top', gameData.y);
 
-            if (bolSide != (0 > Math.cos(opts.ballAngle * Math.PI / 180) > 0)) {
+            if (bolSide !== (0 > Math.cos(opts.ballAngle * Math.PI / 180) > 0)) {
                 opts.ballAngle += 180;
             }
 
             ball.css('visibility', 'visible');
-        }
+        },
 
-        var sounds = {
+        sounds = {
             _muted: false,
             paddleImpact: function () {
                 if (opts.sounds && !sounds._muted && opts.sounds.paddleImpact) {
@@ -125,34 +125,35 @@ define([
         };
         window.pongSound = sounds;
 
-        function UpdateScore(bolUser, gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result) {
+        function updateScore(bolUser, gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result) {
 
-            if (bolUser){
+            if (bolUser) {
                 gameData.playerScore++;
                 yourScoreBoard.text(gameData.playerScore);
-            }else{
+            } else {
                 gameData.compScore++;
                 compScoreBoard.text(gameData.compScore);
             }
 
-            if (gameData.playerScore == opts.playTo || gameData.compScore == opts.playTo) {
+            if (gameData.playerScore === opts.playTo ||
+                    gameData.compScore === opts.playTo) {
                 ball.css('visibility', 'hidden');
                 gameData.gameOver = true;
 
                 result.css('display', 'block');
-                if(gameData.playerScore == opts.playTo) {
+                if (gameData.playerScore === opts.playTo) {
                     result.append('you win!');
                 } else {
                     result.append('you lose :(');
                 }
 
             } else {
-                PositionBall(bolUser, gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard);
+                positionBall(bolUser, gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard);
             }
         }
 
         // Is run by the setTimeout function. Updates the gameData object.
-        function Update(gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result) {
+        function update(gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result) {
 
             if (gameData.gameOver) {
                 msg.html('Click to start!');
@@ -163,67 +164,69 @@ define([
 
             // Dynamically Adjust Game Speed
 
-            var tmpDelay = new Date();
-            var Diff = tmpDelay.valueOf() - gameData.delay.valueOf() - opts.target;
-            gameData.speed += (Diff > 5)?-1:0;
-            gameData.speed += (Diff < -5)?1:0;
+            var tmpDelay = new Date(),
+                Diff = tmpDelay.valueOf() - gameData.delay.valueOf() - opts.target,
+                d, VB, HB, Center, MoveDiff, RightTop, LeftTop, LeftCenter, MaxLeft, MaxRight;
+            gameData.speed += (Diff > 5) ? -1 : 0;
+            gameData.speed += (Diff < -5) ? 1 : 0;
             gameData.speed = Math.abs(gameData.speed);
             gameData.delay = tmpDelay;
 
             setTimeout(function () {
-                Update(gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result);
+                update(gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result);
             }, gameData.speed);
 
             //    MoveBall
 
-            var d = opts.ballAngle * Math.PI / 180;
+            d = ((opts.ballAngle * Math.PI) / 180);
             gameData.y += Math.round(opts.ballSpeed * Math.sin(d));
             gameData.x += Math.round(opts.ballSpeed * Math.cos(d));
-            var VB = 180 - opts.ballAngle;
-            var HB = 0 - opts.ballAngle;
+            VB = 180 - opts.ballAngle;
+            HB = 0 - opts.ballAngle;
 
             //    Move Computer
 
-            var LeftTop = parseInt(leftPaddle.css('top'), 10),
-                LeftCenter = (opts.paddleHeight/2) + LeftTop,
-                Center;
+            LeftTop = parseInt(leftPaddle.css('top'), 10);
+            LeftCenter = (opts.paddleHeight / 2) + LeftTop;
             if (Math.cos(d) > 0 || (gameData.x > opts.width / (2 - (gameData.compAdj / (opts.difficulty * 10))))) {
-                Center = (opts.height/2);
+                Center = (opts.height / 2);
             } else {
-                Center = (opts.ballHeight/2) + gameData.y;
+                Center = (opts.ballHeight / 2) + gameData.y;
             }
-            var MoveDiff = Math.abs(Center - LeftCenter);
-            if (MoveDiff > opts.compSpeed)
+            MoveDiff = Math.abs(Center - LeftCenter);
+            if (MoveDiff > opts.compSpeed) {
                 MoveDiff = opts.compSpeed;
-
-            if (Center > LeftCenter)
+            }
+            if (Center > LeftCenter) {
                 LeftTop += MoveDiff;
-            else
+            } else {
                 LeftTop -= MoveDiff;
-
-            if (LeftTop < 1)
+            }
+            if (LeftTop < 1) {
                 LeftTop = 1;
-
-            if ((LeftTop+opts.paddleHeight+1) > opts.height) {
+            }
+            if ((LeftTop + opts.paddleHeight + 1) > opts.height) {
                 LeftTop = opts.height - opts.paddleHeight - 1;
             }
 
-            leftPaddle.css('top', LeftTop+'px');
+            leftPaddle.css('top', LeftTop + 'px');
 
             //    Move Player
 
-            var RightTop = parseInt(rightPaddle.css('top'), 10);
-            if (gameData.up)
+            RightTop = parseInt(rightPaddle.css('top'), 10);
+            if (gameData.up) {
                 RightTop -= opts.playerSpeed;
-            if (gameData.down)
+            } else if (gameData.down) {
                 RightTop += opts.playerSpeed;
+            }
 
-            if (RightTop < 1)
+            if (RightTop < 1) {
                 RightTop = 1;
-            if ((RightTop+opts.paddleHeight+1) > opts.height)
-                RightTop=opts.height-opts.paddleHeight-1;
-
-            rightPaddle.css('top', RightTop+'px');
+            }
+            if ((RightTop + opts.paddleHeight + 1) > opts.height) {
+                RightTop = opts.height - opts.paddleHeight - 1;
+            }
+            rightPaddle.css('top', RightTop + 'px');
 
             //    Check Top/Bottom/Left/Right
 
@@ -233,8 +236,8 @@ define([
                 sounds.wallImpact();
             }
 
-            if (gameData.y > opts.height-opts.ballHeight) {
-                gameData.y = opts.height-opts.ballHeight;
+            if (gameData.y > opts.height - opts.ballHeight) {
+                gameData.y = opts.height - opts.ballHeight;
                 opts.ballAngle = HB;
                 sounds.wallImpact();
             }
@@ -244,21 +247,21 @@ define([
                 opts.ballAngle = VB;
                 gameData.compAdj -= opts.difficulty;
                 sounds.score();
-                UpdateScore(true, gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result);
+                updateScore(true, gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result);
             }
 
-            if (gameData.x > opts.width-opts.ballWidth) {
-                gameData.x=opts.width-opts.ballWidth;
-                opts.ballAngle=VB;
+            if (gameData.x > opts.width - opts.ballWidth) {
+                gameData.x = opts.width - opts.ballWidth;
+                opts.ballAngle = VB;
                 sounds.score();
-                UpdateScore(false, gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result);
+                updateScore(false, gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result);
             }
 
             //    Check Left Paddle
 
-            var MaxLeft = opts.paddleWidth + opts.paddleBuffer;
+            MaxLeft = opts.paddleWidth + opts.paddleBuffer;
             if (gameData.x < MaxLeft) {
-                if (gameData.y < (opts.paddleHeight + LeftTop) && (gameData.y+opts.ballHeight) > LeftTop) {
+                if (gameData.y < (opts.paddleHeight + LeftTop) && (gameData.y + opts.ballHeight) > LeftTop) {
                     gameData.x = MaxLeft;
                     opts.ballAngle = VB;
                     gameData.compAdj++;
@@ -268,9 +271,9 @@ define([
 
             //    Check Right Paddle
 
-            var MaxRight = opts.width - opts.ballWidth - opts.paddleWidth - opts.paddleBuffer;
+            MaxRight = opts.width - opts.ballWidth - opts.paddleWidth - opts.paddleBuffer;
             if (gameData.x > MaxRight) {
-                if (gameData.y < (opts.paddleHeight + RightTop) && (gameData.y+opts.ballHeight) > RightTop) {
+                if (gameData.y < (opts.paddleHeight + RightTop) && (gameData.y + opts.ballHeight) > RightTop) {
                     gameData.x = MaxRight;
                     opts.ballAngle = VB;
                     sounds.paddleImpact();
@@ -280,12 +283,12 @@ define([
             ball.css('top', gameData.y);
             ball.css('left', gameData.x);
 
-            if (gameData.compAdj < 0){
+            if (gameData.compAdj < 0) {
                 gameData.compAdj = 0;
             }
         }
 
-        function Start(gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result) {
+        function start(gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result) {
 
             if (gameData.gameOver) {
                 gameData.gameOver = false;
@@ -295,15 +298,15 @@ define([
                 result.css('display', 'none');
                 result.text('');
 
-                setTimeout(function(){
-                    Update(gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result);
+                setTimeout(function () {
+                    update(gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result);
                 }, gameData.speed);
-                UpdateScore(false, gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result);
-                UpdateScore(true, gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result);
+                updateScore(false, gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result);
+                updateScore(true, gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result);
             }
         }
 
-        return this.each(function() {
+        return this.each(function () {
 
             var gameData = {
                 up: false,                //Down key pressed?
@@ -317,35 +320,43 @@ define([
                 gameOver: true,
                 delay: new Date()
             },
-            $this = $(this);
-
-            function keyDownEvent(event){
+            $this = $(this),
+            leftPaddle = $this.children('.leftPaddle'),
+            rightPaddle = $this.children('.rightPaddle'),
+            ball = $this.children('.ball'),
+            yourScoreBoard = $this.children('.yourScoreBoard'),
+            compScoreBoard = $this.children('.compScoreBoard'),
+            msg = $this.children('.msg'),
+            field = $this.children('.field'),
+            divider = $this.children('.divider'),
+            result = $this.children('.result'),
+            keyDownEvent = function (event) {
                 switch (event.keyCode) {
-                    case 38: //Up Arrow
-                        gameData.up = true;
-                        break;
-                    case 40: //Down Arrow
-                        gameData.down = true;
-                        break;
-                    case 27: //Escape
-                        $this.children(".ball").css('visibility', 'hidden');
-                        gameData.gameOver = true;
-                        break;
+                case 38: //Up Arrow
+                    gameData.up = true;
+                    break;
+                case 40: //Down Arrow
+                    gameData.down = true;
+                    break;
+                case 27: //Escape
+                    $this.children(".ball").css('visibility', 'hidden');
+                    gameData.gameOver = true;
+                    break;
                 }
                 return false;
-            }
+            },
 
-            function keyUpEvent(event){
+            keyUpEvent = function (event) {
                 switch (event.keyCode) {
-                    case 38: //Up Arrow
-                        gameData.up = false;
-                        break;
-                    case 40: //Down Arrow
-                        gameData.down = false;
-                        break;
+                case 38: //Up Arrow
+                    gameData.up = false;
+                    break;
+                case 40: //Down Arrow
+                    gameData.down = false;
+                    break;
                 }
                 return false;
-            }
+            };
 
             $this.css('background', opts.backgroundColor);
             $this.css('position', 'relative');
@@ -383,16 +394,6 @@ define([
                     $this.append('<audio id="looseSound"><source src="' + opts.sounds.loose + '" preload="auto" /></audio>');
                 }
             }
-
-            var leftPaddle = $this.children('.leftPaddle');
-            var rightPaddle = $this.children('.rightPaddle');
-            var ball = $this.children('.ball');
-            var yourScoreBoard = $this.children('.yourScoreBoard');
-            var compScoreBoard = $this.children('.compScoreBoard');
-            var msg = $this.children('.msg');
-            var field = $this.children('.field');
-            var divider = $this.children('.divider');
-            var result = $this.children('.result');
 
             field.keydown(keyDownEvent);
             field.keyup(keyUpEvent);
@@ -435,11 +436,11 @@ define([
             }
 
             gameData.speed = opts.targetSpeed;
-            Update(gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result);
+            update(gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result);
 
-            $this.click(function(){
+            $this.click(function () {
                 field.focus();
-                Start(gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result);
+                start(gameData, leftPaddle, rightPaddle, ball, yourScoreBoard, compScoreBoard, msg, result);
             });
         });
     };
